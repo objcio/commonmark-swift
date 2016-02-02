@@ -200,9 +200,13 @@ extension Block {
        case .Paragraph(let children):
          node = Node(type: CMARK_NODE_PARAGRAPH, elements: children)
        case let .List(items, type):
-         let listItems = items.map { Node(type: CMARK_NODE_ITEM, blocks: $0) }
+         let listItems = items.map { 
+             Node(type: CMARK_NODE_ITEM, blocks: $0) 
+         }
          node = Node(type: CMARK_NODE_LIST, children: listItems)
-         node.listType = type == .Unordered ? CMARK_BULLET_LIST : CMARK_ORDERED_LIST
+         node.listType = type == .Unordered 
+             ? CMARK_BULLET_LIST 
+             : CMARK_ORDERED_LIST
        case .BlockQuote(let items):
          node = Node(type: CMARK_NODE_BLOCK_QUOTE, blocks: items)
        case let .CodeBlock(text, language):
