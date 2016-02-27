@@ -36,7 +36,7 @@ func addFootnote(inout counter: Int) -> InlineElement -> [InlineElement] {
     return { element in
         switch element {
         case let .Link(children, _, _):
-            counter++
+            counter += 1
             return children +
                 [InlineElement.InlineHtml(text: "<sup>\(counter)</sup>")]
         default:
@@ -58,8 +58,8 @@ func addFootnote2() -> InlineElement -> [InlineElement] {
     return { element in
         switch element {
         case let .Link(children, _, _):
-            counter++
-            return children +
+            counter += 1
+            return children + 
                 [InlineElement.InlineHtml(text: "<sup>\(counter)</sup>")]
         default:
             return [element]
@@ -69,14 +69,16 @@ func addFootnote2() -> InlineElement -> [InlineElement] {
 // <</AddFootnote2>>
 
 // <<LinkURL>>
-func linkURL(blocks: [Block]) -> [String?] {
-    return deepCollect(blocks) { (element: InlineElement) -> [String?] in
-        switch element {
-        case let .Link(_, _, url):
-            return [url]
-        default:
-            return []
-        }
+func linkURL(element: InlineElement) -> [String?] {
+    switch element {
+    case let .Link(_, _, url):
+        return [url]
+    default:
+        return []
     }
 }
 // <</LinkURL>>
+
+// <<CollectAllLinks>>
+let links: [String?] = deepCollect(elements, linkURL)
+// <</CollectAllLinks>>
