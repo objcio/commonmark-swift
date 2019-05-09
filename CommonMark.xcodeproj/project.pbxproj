@@ -3,15 +3,15 @@
    archiveVersion = "1";
    objectVersion = "46";
    objects = {
-      "CommonMark::CcMark::ProductTarget" = {
+      "CommonMark::Ccmark::ProductTarget" = {
          isa = "PBXAggregateTarget";
          buildConfigurationList = "OBJ_20";
          buildPhases = (
          );
          dependencies = (
          );
-         name = "CcMark";
-         productName = "CcMark";
+         name = "Ccmark";
+         productName = "Ccmark";
       };
       "CommonMark::CommonMark" = {
          isa = "PBXNativeTarget";
@@ -61,7 +61,7 @@
          productRefGroup = "OBJ_15";
          projectDirPath = ".";
          targets = (
-            "CommonMark::CcMark::ProductTarget",
+            "CommonMark::Ccmark::ProductTarget",
             "CommonMark::CommonMark",
             "CommonMark::SwiftPMPackageDescription"
          );
@@ -337,7 +337,7 @@
                "-target",
                "x86_64-apple-macosx10.10",
                "-sdk",
-               "/Applications/Xcode-beta.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.14.sdk"
+               "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.14.sdk"
             );
             SWIFT_VERSION = "5.0";
          };
@@ -355,7 +355,7 @@
                "-target",
                "x86_64-apple-macosx10.10",
                "-sdk",
-               "/Applications/Xcode-beta.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.14.sdk"
+               "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.14.sdk"
             );
             SWIFT_VERSION = "5.0";
          };
