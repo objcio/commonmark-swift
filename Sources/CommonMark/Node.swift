@@ -9,7 +9,9 @@
 import Foundation
 import Ccmark
 
-func markdownToHtml(string: String) -> String {
+
+
+func markdowntoHTML(string: String) -> String {
     let outString = cmark_markdown_to_html(string, string.utf8.count, 0)!
     defer { free(outString) }
     return String(cString: outString)
@@ -29,11 +31,48 @@ struct Markdown {
 }
 
 extension String {
+    // We're going through Data instead of using init(cstring:) because that leaks memory on Linux.
+    
     init?(unsafeCString: UnsafePointer<Int8>!) {
         guard let cString = unsafeCString else { return nil }
-        self.init(cString: cString)
+        let data = cString.withMemoryRebound(to: UInt8.self, capacity: strlen(cString), { p in
+            return Data(UnsafeBufferPointer(start: p, count: strlen(cString)))
+        })
+        self.init(data: data, encoding: .utf8)
+    }
+    
+    init?(freeingCString str: UnsafeMutablePointer<Int8>?) {
+        guard let cString = str else { return nil }
+        let data = cString.withMemoryRebound(to: UInt8.self, capacity: strlen(cString), { p in
+            return Data(UnsafeBufferPointer(start: p, count: strlen(cString)))
+        })
+        str?.deallocate()
+        self.init(data: data, encoding: .utf8)
     }
 }
+
+/// A position in a Markdown document. Note that both `line` and `column` are 1-based.
+public struct Position {
+    public var line: Int32
+    public var column: Int32
+}
+
+public struct RenderingOptions: OptionSet {
+    public var rawValue: Int32
+    public init(rawValue: Int32 = CMARK_OPT_DEFAULT) {
+        self.rawValue = rawValue
+    }
+    
+    static public let sourcePos = RenderingOptions(rawValue: CMARK_OPT_SOURCEPOS)
+    static public let hardBreaks = RenderingOptions(rawValue: CMARK_OPT_HARDBREAKS)
+    static public let safe = RenderingOptions(rawValue: CMARK_OPT_SAFE)
+    static public let unsafe = RenderingOptions(rawValue: CMARK_OPT_UNSAFE)
+    static public let noBreaks = RenderingOptions(rawValue: CMARK_OPT_NOBREAKS)
+    static public let normalize = RenderingOptions(rawValue: CMARK_OPT_NORMALIZE)
+    static public let validateUTF8 = RenderingOptions(rawValue: CMARK_OPT_VALIDATE_UTF8)
+    static public let smart = RenderingOptions(rawValue: CMARK_OPT_SMART)
+}
+
 
 /// A node in a Markdown document.
 ///
@@ -47,13 +86,14 @@ public class Node: CustomStringConvertible {
     }
     
     public init?(filename: String) {
-        guard let node = cmark_parse_file(fopen(filename, "r"), 0) else { return nil }
+        guard let file = fopen(filename, "r"),
+            let node = cmark_parse_file(file, 0) else { return nil }
         self.node = node
     }
 
-    public init?(markdown: String) {
+    public init(markdown: String) {
         guard let node = cmark_parse_document(markdown, markdown.utf8.count, 0) else {
-            return nil
+            fatalError("cmark_parse_document returned NULL. Should never happen.")
         }
         self.node = node
     }
@@ -63,25 +103,25 @@ public class Node: CustomStringConvertible {
         cmark_node_free(node)
     }
     
-    var type: cmark_node_type {
+    public var type: cmark_node_type {
         return cmark_node_get_type(node)
     }
     
-    var listType: cmark_list_type {
+    public var listType: cmark_list_type {
         get { return cmark_node_get_list_type(node) }
         set { cmark_node_set_list_type(node, newValue) }
     }
     
-    var listStart: Int {
+    public var listStart: Int {
         get { return Int(cmark_node_get_list_start(node)) }
         set { cmark_node_set_list_start(node, Int32(newValue)) }
     }
     
-    var typeString: String {
-        return String(cString: cmark_node_get_type_string(node)!)
+    public var typeString: String {
+        return String(unsafeCString: cmark_node_get_type_string(node)) ?? ""
     }
     
-    var literal: String? {
+    public var literal: String? {
         get { return String(unsafeCString: cmark_node_get_literal(node)) }
         set {
           if let value = newValue {
@@ -92,12 +132,19 @@ public class Node: CustomStringConvertible {
         }
     }
     
-    var headerLevel: Int {
+    public var start: Position {
+        return Position(line: cmark_node_get_start_line(node), column: cmark_node_get_start_column(node))
+    }
+    public var end: Position {
+        return Position(line: cmark_node_get_end_line(node), column: cmark_node_get_end_column(node))
+    }
+    
+    public var headerLevel: Int {
         get { return Int(cmark_node_get_heading_level(node)) }
         set { cmark_node_set_heading_level(node, Int32(newValue)) }
     }
     
-    var fenceInfo: String? {
+    public var fenceInfo: String? {
         get {
             return String(unsafeCString: cmark_node_get_fence_info(node)) }
         set {
@@ -109,7 +156,7 @@ public class Node: CustomStringConvertible {
         }
     }
     
-    var urlString: String? {
+    public var urlString: String? {
         get { return String(unsafeCString: cmark_node_get_url(node)) }
         set {
           if let value = newValue {
@@ -120,7 +167,7 @@ public class Node: CustomStringConvertible {
         }
     }
     
-    var title: String? {
+    public var title: String? {
         get { return String(unsafeCString: cmark_node_get_title(node)) }
         set {
           if let value = newValue {
@@ -131,7 +178,7 @@ public class Node: CustomStringConvertible {
         }
     }
     
-    var children: [Node] {
+    public var children: [Node] {
         var result: [Node] = []
         
         var child = cmark_node_first_child(node)
@@ -143,23 +190,25 @@ public class Node: CustomStringConvertible {
     }
 
     /// Renders the HTML representation
-    public var html: String {
-        return String(cString: cmark_render_html(node, 0))
+    ///
+    
+    public func html(options: RenderingOptions = RenderingOptions()) -> String {
+        return String(freeingCString: cmark_render_html(node, options.rawValue)) ?? ""
     }
     
     /// Renders the XML representation
-    public var xml: String {
-        return String(cString: cmark_render_xml(node, 0))
+    public func xml(options: RenderingOptions = RenderingOptions()) -> String {
+        return String(freeingCString: cmark_render_xml(node, options.rawValue)) ?? ""
     }
     
     /// Renders the CommonMark representation
-    public var commonMark: String {
-        return String(cString: cmark_render_commonmark(node, CMARK_OPT_DEFAULT, 80))
+    public func commonMark(options: RenderingOptions = RenderingOptions()) -> String {
+        return String(freeingCString: cmark_render_commonmark(node, options.rawValue, 80)) ?? ""
     }
     
     /// Renders the LaTeX representation
-    public var latex: String {
-        return String(cString: cmark_render_latex(node, CMARK_OPT_DEFAULT, 80))
+    public func latex(options: RenderingOptions = RenderingOptions()) -> String {
+        return String(freeingCString: cmark_render_latex(node, options.rawValue, 80)) ?? ""
     }
 
     public var description: String {
