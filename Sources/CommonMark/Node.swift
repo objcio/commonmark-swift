@@ -9,6 +9,8 @@
 import Foundation
 import Ccmark
 
+
+
 func markdownToHtml(string: String) -> String {
     let outString = cmark_markdown_to_html(string, string.utf8.count, 0)!
     defer { free(outString) }
@@ -29,10 +31,40 @@ struct Markdown {
 }
 
 extension String {
+    // We're going through Data instead of using init(cstring:) because that leaks memory on Linux.
+    
     init?(unsafeCString: UnsafePointer<Int8>!) {
         guard let cString = unsafeCString else { return nil }
-        self.init(cString: cString)
+        let data = cString.withMemoryRebound(to: UInt8.self, capacity: strlen(cString), { p in
+            return Data(UnsafeBufferPointer(start: p, count: strlen(cString)))
+        })
+        self.init(data: data, encoding: .utf8)
     }
+    
+    init?(freeingCString str: UnsafeMutablePointer<Int8>?) {
+        guard let cString = str else { return nil }
+        let data = cString.withMemoryRebound(to: UInt8.self, capacity: strlen(cString), { p in
+            return Data(UnsafeBufferPointer(start: p, count: strlen(cString)))
+        })
+        str?.deallocate()
+        self.init(data: data, encoding: .utf8)
+    }
+}
+
+public struct RenderingOptions: OptionSet {
+    public var rawValue: Int32
+    public init(rawValue: Int32 = CMARK_OPT_DEFAULT) {
+        self.rawValue = rawValue
+    }
+    
+    static public let sourcePos = RenderingOptions(rawValue: CMARK_OPT_SOURCEPOS)
+    static public let hardBreaks = RenderingOptions(rawValue: CMARK_OPT_HARDBREAKS)
+    static public let safe = RenderingOptions(rawValue: CMARK_OPT_SAFE)
+    static public let unsafe = RenderingOptions(rawValue: CMARK_OPT_UNSAFE)
+    static public let noBreaks = RenderingOptions(rawValue: CMARK_OPT_NOBREAKS)
+    static public let normalize = RenderingOptions(rawValue: CMARK_OPT_NORMALIZE)
+    static public let validateUTF8 = RenderingOptions(rawValue: CMARK_OPT_VALIDATE_UTF8)
+    static public let smart = RenderingOptions(rawValue: CMARK_OPT_SMART)
 }
 
 public struct RenderingOptions: OptionSet {
@@ -94,7 +126,7 @@ public class Node: CustomStringConvertible {
     }
     
     var typeString: String {
-        return String(cString: cmark_node_get_type_string(node)!)
+        return String(unsafeCString: cmark_node_get_type_string(node)) ?? ""
     }
     
     var literal: String? {
@@ -160,22 +192,22 @@ public class Node: CustomStringConvertible {
 
     /// Renders the HTML representation
     public func html(options: RenderingOptions = RenderingOptions()) -> String {
-        return String(cString: cmark_render_html(node, options.rawValue))
+        return String(freeingCString: cmark_render_html(node, options.rawValue)) ?? ""
     }
     
     /// Renders the XML representation
     public func xml(options: RenderingOptions = RenderingOptions()) -> String {
-        return String(cString: cmark_render_xml(node, options.rawValue))
+        return String(freeingCString: cmark_render_xml(node, options.rawValue)) ?? ""
     }
     
     /// Renders the CommonMark representation
     public func commonMark(options: RenderingOptions = RenderingOptions()) -> String {
-        return String(cString: cmark_render_commonmark(node, options.rawValue, 80))
+        return String(freeingCString: cmark_render_commonmark(node, options.rawValue, 80)) ?? ""
     }
     
     /// Renders the LaTeX representation
     public func latex(options: RenderingOptions = RenderingOptions()) -> String {
-        return String(cString: cmark_render_latex(node, options.rawValue, 80))
+        return String(freeingCString: cmark_render_latex(node, options.rawValue, 80)) ?? ""
     }
 
     public var description: String {
