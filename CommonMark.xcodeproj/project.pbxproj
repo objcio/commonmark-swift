@@ -3,12 +3,22 @@
    archiveVersion = "1";
    objectVersion = "46";
    objects = {
+      "CommonMark::CcMark::ProductTarget" = {
+         isa = "PBXAggregateTarget";
+         buildConfigurationList = "OBJ_20";
+         buildPhases = (
+         );
+         dependencies = (
+         );
+         name = "CcMark";
+         productName = "CcMark";
+      };
       "CommonMark::CommonMark" = {
          isa = "PBXNativeTarget";
-         buildConfigurationList = "OBJ_19";
+         buildConfigurationList = "OBJ_24";
          buildPhases = (
-            "OBJ_22",
-            "OBJ_26"
+            "OBJ_27",
+            "OBJ_31"
          );
          dependencies = (
          );
@@ -24,9 +34,9 @@
       };
       "CommonMark::SwiftPMPackageDescription" = {
          isa = "PBXNativeTarget";
-         buildConfigurationList = "OBJ_28";
+         buildConfigurationList = "OBJ_33";
          buildPhases = (
-            "OBJ_31"
+            "OBJ_36"
          );
          dependencies = (
          );
@@ -48,24 +58,41 @@
             "en"
          );
          mainGroup = "OBJ_5";
-         productRefGroup = "OBJ_14";
+         productRefGroup = "OBJ_15";
          projectDirPath = ".";
          targets = (
+            "CommonMark::CcMark::ProductTarget",
             "CommonMark::CommonMark",
             "CommonMark::SwiftPMPackageDescription"
          );
       };
       "OBJ_10" = {
+         isa = "PBXGroup";
+         children = (
+            "OBJ_11",
+            "OBJ_12",
+            "OBJ_13"
+         );
+         name = "CommonMark";
+         path = "Sources/CommonMark";
+         sourceTree = "SOURCE_ROOT";
+      };
+      "OBJ_11" = {
+         isa = "PBXFileReference";
+         path = "ASTOperations.swift";
+         sourceTree = "<group>";
+      };
+      "OBJ_12" = {
          isa = "PBXFileReference";
          path = "Node.swift";
          sourceTree = "<group>";
       };
-      "OBJ_11" = {
+      "OBJ_13" = {
          isa = "PBXFileReference";
          path = "SwiftAST.swift";
          sourceTree = "<group>";
       };
-      "OBJ_12" = {
+      "OBJ_14" = {
          isa = "PBXGroup";
          children = (
          );
@@ -73,15 +100,7 @@
          path = "";
          sourceTree = "SOURCE_ROOT";
       };
-      "OBJ_13" = {
-         isa = "PBXGroup";
-         children = (
-         );
-         name = "Dependencies";
-         path = "";
-         sourceTree = "<group>";
-      };
-      "OBJ_14" = {
+      "OBJ_15" = {
          isa = "PBXGroup";
          children = (
             "CommonMark::CommonMark::Product"
@@ -90,24 +109,15 @@
          path = "";
          sourceTree = "BUILT_PRODUCTS_DIR";
       };
-      "OBJ_16" = {
+      "OBJ_17" = {
          isa = "PBXFileReference";
          path = "Package.pins";
          sourceTree = "<group>";
       };
-      "OBJ_17" = {
+      "OBJ_18" = {
          isa = "PBXFileReference";
          path = "README.md";
          sourceTree = "<group>";
-      };
-      "OBJ_19" = {
-         isa = "XCConfigurationList";
-         buildConfigurations = (
-            "OBJ_20",
-            "OBJ_21"
-         );
-         defaultConfigurationIsVisible = "0";
-         defaultConfigurationName = "Release";
       };
       "OBJ_2" = {
          isa = "XCConfigurationList";
@@ -119,140 +129,142 @@
          defaultConfigurationName = "Release";
       };
       "OBJ_20" = {
-         isa = "XCBuildConfiguration";
-         buildSettings = {
-            ENABLE_TESTABILITY = "YES";
-            FRAMEWORK_SEARCH_PATHS = (
-               "$(inherited)",
-               "$(PLATFORM_DIR)/Developer/Library/Frameworks"
-            );
-            HEADER_SEARCH_PATHS = (
-               "$(inherited)",
-               "$(SRCROOT)/.build/checkouts/Ccmark"
-            );
-            INFOPLIST_FILE = "CommonMark.xcodeproj/CommonMark_Info.plist";
-            LD_RUNPATH_SEARCH_PATHS = (
-               "$(inherited)",
-               "$(TOOLCHAIN_DIR)/usr/lib/swift/macosx"
-            );
-            OTHER_CFLAGS = (
-               "$(inherited)",
-               "-I/usr/local/include"
-            );
-            OTHER_LDFLAGS = (
-               "$(inherited)",
-               "-L/usr/local/lib",
-               "-lcmark"
-            );
-            OTHER_SWIFT_FLAGS = (
-               "$(inherited)",
-               "-I/usr/local/include"
-            );
-            PRODUCT_BUNDLE_IDENTIFIER = "CommonMark";
-            PRODUCT_MODULE_NAME = "$(TARGET_NAME:c99extidentifier)";
-            PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
-            SKIP_INSTALL = "YES";
-            SWIFT_ACTIVE_COMPILATION_CONDITIONS = (
-               "$(inherited)"
-            );
-            SWIFT_VERSION = "4.2";
-            TARGET_NAME = "CommonMark";
-         };
-         name = "Debug";
-      };
-      "OBJ_21" = {
-         isa = "XCBuildConfiguration";
-         buildSettings = {
-            ENABLE_TESTABILITY = "YES";
-            FRAMEWORK_SEARCH_PATHS = (
-               "$(inherited)",
-               "$(PLATFORM_DIR)/Developer/Library/Frameworks"
-            );
-            HEADER_SEARCH_PATHS = (
-               "$(inherited)",
-               "$(SRCROOT)/.build/checkouts/Ccmark"
-            );
-            INFOPLIST_FILE = "CommonMark.xcodeproj/CommonMark_Info.plist";
-            LD_RUNPATH_SEARCH_PATHS = (
-               "$(inherited)",
-               "$(TOOLCHAIN_DIR)/usr/lib/swift/macosx"
-            );
-            OTHER_CFLAGS = (
-               "$(inherited)",
-               "-I/usr/local/include"
-            );
-            OTHER_LDFLAGS = (
-               "$(inherited)",
-               "-L/usr/local/lib",
-               "-lcmark"
-            );
-            OTHER_SWIFT_FLAGS = (
-               "$(inherited)",
-               "-I/usr/local/include"
-            );
-            PRODUCT_BUNDLE_IDENTIFIER = "CommonMark";
-            PRODUCT_MODULE_NAME = "$(TARGET_NAME:c99extidentifier)";
-            PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
-            SKIP_INSTALL = "YES";
-            SWIFT_ACTIVE_COMPILATION_CONDITIONS = (
-               "$(inherited)"
-            );
-            SWIFT_VERSION = "4.2";
-            TARGET_NAME = "CommonMark";
-         };
-         name = "Release";
-      };
-      "OBJ_22" = {
-         isa = "PBXSourcesBuildPhase";
-         files = (
-            "OBJ_23",
-            "OBJ_24",
-            "OBJ_25"
-         );
-      };
-      "OBJ_23" = {
-         isa = "PBXBuildFile";
-         fileRef = "OBJ_9";
-      };
-      "OBJ_24" = {
-         isa = "PBXBuildFile";
-         fileRef = "OBJ_10";
-      };
-      "OBJ_25" = {
-         isa = "PBXBuildFile";
-         fileRef = "OBJ_11";
-      };
-      "OBJ_26" = {
-         isa = "PBXFrameworksBuildPhase";
-         files = (
-         );
-      };
-      "OBJ_28" = {
          isa = "XCConfigurationList";
          buildConfigurations = (
-            "OBJ_29",
-            "OBJ_30"
+            "OBJ_21",
+            "OBJ_22"
          );
          defaultConfigurationIsVisible = "0";
          defaultConfigurationName = "Release";
       };
-      "OBJ_29" = {
+      "OBJ_21" = {
          isa = "XCBuildConfiguration";
          buildSettings = {
-            LD = "/usr/bin/true";
-            OTHER_SWIFT_FLAGS = (
-               "-swift-version",
-               "4.2",
-               "-I",
-               "$(TOOLCHAIN_DIR)/usr/lib/swift/pm/4_2",
-               "-target",
-               "x86_64-apple-macosx10.10",
-               "-sdk",
-               "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.14.sdk"
-            );
-            SWIFT_VERSION = "4.2";
          };
          name = "Debug";
+      };
+      "OBJ_22" = {
+         isa = "XCBuildConfiguration";
+         buildSettings = {
+         };
+         name = "Release";
+      };
+      "OBJ_24" = {
+         isa = "XCConfigurationList";
+         buildConfigurations = (
+            "OBJ_25",
+            "OBJ_26"
+         );
+         defaultConfigurationIsVisible = "0";
+         defaultConfigurationName = "Release";
+      };
+      "OBJ_25" = {
+         isa = "XCBuildConfiguration";
+         buildSettings = {
+            ENABLE_TESTABILITY = "YES";
+            FRAMEWORK_SEARCH_PATHS = (
+               "$(inherited)",
+               "$(PLATFORM_DIR)/Developer/Library/Frameworks"
+            );
+            HEADER_SEARCH_PATHS = (
+               "$(inherited)",
+               "$(SRCROOT)/Sources/Ccmark"
+            );
+            INFOPLIST_FILE = "CommonMark.xcodeproj/CommonMark_Info.plist";
+            IPHONEOS_DEPLOYMENT_TARGET = "8.0";
+            LD_RUNPATH_SEARCH_PATHS = (
+               "$(inherited)",
+               "$(TOOLCHAIN_DIR)/usr/lib/swift/macosx"
+            );
+            MACOSX_DEPLOYMENT_TARGET = "10.10";
+            OTHER_CFLAGS = (
+               "$(inherited)",
+               "-I/usr/local/include"
+            );
+            OTHER_LDFLAGS = (
+               "$(inherited)",
+               "-L/usr/local/lib",
+               "-lcmark"
+            );
+            OTHER_SWIFT_FLAGS = (
+               "$(inherited)",
+               "-I/usr/local/include"
+            );
+            PRODUCT_BUNDLE_IDENTIFIER = "CommonMark";
+            PRODUCT_MODULE_NAME = "$(TARGET_NAME:c99extidentifier)";
+            PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
+            SKIP_INSTALL = "YES";
+            SWIFT_ACTIVE_COMPILATION_CONDITIONS = (
+               "$(inherited)"
+            );
+            SWIFT_VERSION = "5.0";
+            TARGET_NAME = "CommonMark";
+            TVOS_DEPLOYMENT_TARGET = "9.0";
+            WATCHOS_DEPLOYMENT_TARGET = "2.0";
+         };
+         name = "Debug";
+      };
+      "OBJ_26" = {
+         isa = "XCBuildConfiguration";
+         buildSettings = {
+            ENABLE_TESTABILITY = "YES";
+            FRAMEWORK_SEARCH_PATHS = (
+               "$(inherited)",
+               "$(PLATFORM_DIR)/Developer/Library/Frameworks"
+            );
+            HEADER_SEARCH_PATHS = (
+               "$(inherited)",
+               "$(SRCROOT)/Sources/Ccmark"
+            );
+            INFOPLIST_FILE = "CommonMark.xcodeproj/CommonMark_Info.plist";
+            IPHONEOS_DEPLOYMENT_TARGET = "8.0";
+            LD_RUNPATH_SEARCH_PATHS = (
+               "$(inherited)",
+               "$(TOOLCHAIN_DIR)/usr/lib/swift/macosx"
+            );
+            MACOSX_DEPLOYMENT_TARGET = "10.10";
+            OTHER_CFLAGS = (
+               "$(inherited)",
+               "-I/usr/local/include"
+            );
+            OTHER_LDFLAGS = (
+               "$(inherited)",
+               "-L/usr/local/lib",
+               "-lcmark"
+            );
+            OTHER_SWIFT_FLAGS = (
+               "$(inherited)",
+               "-I/usr/local/include"
+            );
+            PRODUCT_BUNDLE_IDENTIFIER = "CommonMark";
+            PRODUCT_MODULE_NAME = "$(TARGET_NAME:c99extidentifier)";
+            PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
+            SKIP_INSTALL = "YES";
+            SWIFT_ACTIVE_COMPILATION_CONDITIONS = (
+               "$(inherited)"
+            );
+            SWIFT_VERSION = "5.0";
+            TARGET_NAME = "CommonMark";
+            TVOS_DEPLOYMENT_TARGET = "9.0";
+            WATCHOS_DEPLOYMENT_TARGET = "2.0";
+         };
+         name = "Release";
+      };
+      "OBJ_27" = {
+         isa = "PBXSourcesBuildPhase";
+         files = (
+            "OBJ_28",
+            "OBJ_29",
+            "OBJ_30"
+         );
+      };
+      "OBJ_28" = {
+         isa = "PBXBuildFile";
+         fileRef = "OBJ_11";
+      };
+      "OBJ_29" = {
+         isa = "PBXBuildFile";
+         fileRef = "OBJ_12";
       };
       "OBJ_3" = {
          isa = "XCBuildConfiguration";
@@ -296,12 +308,30 @@
          name = "Debug";
       };
       "OBJ_30" = {
+         isa = "PBXBuildFile";
+         fileRef = "OBJ_13";
+      };
+      "OBJ_31" = {
+         isa = "PBXFrameworksBuildPhase";
+         files = (
+         );
+      };
+      "OBJ_33" = {
+         isa = "XCConfigurationList";
+         buildConfigurations = (
+            "OBJ_34",
+            "OBJ_35"
+         );
+         defaultConfigurationIsVisible = "0";
+         defaultConfigurationName = "Release";
+      };
+      "OBJ_34" = {
          isa = "XCBuildConfiguration";
          buildSettings = {
             LD = "/usr/bin/true";
             OTHER_SWIFT_FLAGS = (
                "-swift-version",
-               "4.2",
+               "5",
                "-I",
                "$(TOOLCHAIN_DIR)/usr/lib/swift/pm/4_2",
                "-target",
@@ -309,17 +339,35 @@
                "-sdk",
                "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.14.sdk"
             );
-            SWIFT_VERSION = "4.2";
+            SWIFT_VERSION = "5.0";
+         };
+         name = "Debug";
+      };
+      "OBJ_35" = {
+         isa = "XCBuildConfiguration";
+         buildSettings = {
+            LD = "/usr/bin/true";
+            OTHER_SWIFT_FLAGS = (
+               "-swift-version",
+               "5",
+               "-I",
+               "$(TOOLCHAIN_DIR)/usr/lib/swift/pm/4_2",
+               "-target",
+               "x86_64-apple-macosx10.10",
+               "-sdk",
+               "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.14.sdk"
+            );
+            SWIFT_VERSION = "5.0";
          };
          name = "Release";
       };
-      "OBJ_31" = {
+      "OBJ_36" = {
          isa = "PBXSourcesBuildPhase";
          files = (
-            "OBJ_32"
+            "OBJ_37"
          );
       };
-      "OBJ_32" = {
+      "OBJ_37" = {
          isa = "PBXBuildFile";
          fileRef = "OBJ_6";
       };
@@ -365,11 +413,10 @@
          children = (
             "OBJ_6",
             "OBJ_7",
-            "OBJ_12",
-            "OBJ_13",
             "OBJ_14",
-            "OBJ_16",
-            "OBJ_17"
+            "OBJ_15",
+            "OBJ_17",
+            "OBJ_18"
          );
          path = "";
          sourceTree = "<group>";
@@ -383,7 +430,8 @@
       "OBJ_7" = {
          isa = "PBXGroup";
          children = (
-            "OBJ_8"
+            "OBJ_8",
+            "OBJ_10"
          );
          name = "Sources";
          path = "";
@@ -392,17 +440,15 @@
       "OBJ_8" = {
          isa = "PBXGroup";
          children = (
-            "OBJ_9",
-            "OBJ_10",
-            "OBJ_11"
+            "OBJ_9"
          );
-         name = "CommonMark";
-         path = "Sources/CommonMark";
+         name = "Ccmark";
+         path = "Sources/Ccmark";
          sourceTree = "SOURCE_ROOT";
       };
       "OBJ_9" = {
          isa = "PBXFileReference";
-         path = "ASTOperations.swift";
+         path = "module.modulemap";
          sourceTree = "<group>";
       };
    };
